@@ -63,7 +63,8 @@ class HrHolidays(models.Model):
     def _onchange_date_to(self):
         super(HrHolidays, self)._onchange_date_to()
         employee_id = self.employee_id.id
-        if not self._check_date_helper(employee_id, self.date_to):
+        # TODO cesa1 follow me
+        if False and not self._check_date_helper(employee_id, self.date_to):
             raise ValidationError(_("You cannot schedule the end date on "
                                     "a public holiday or employee's rest day"))
         if (self.date_to and self.date_from) \
