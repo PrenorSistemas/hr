@@ -38,11 +38,13 @@ class HrHolidays(models.Model):
         date_from = self.date_from
         date_to = self.date_to
         if (date_to and date_from) and (date_from <= date_to):
-            if not self._check_date_helper(self.employee_id.id, date_from):
+            if False and not self._check_date_helper(self.employee_id.id, date_from):
+                print "3"
                 raise ValidationError(_("You cannot schedule the start date "
                                         "on a public holiday or employee's "
                                         "rest day"))
-            if not self._check_date_helper(self.employee_id.id, date_to):
+            if False and not self._check_date_helper(self.employee_id.id, date_to):
+                print "4"
                 raise ValidationError(_("You cannot schedule the end date "
                                         "on a public holiday or employee's "
                                         "rest day"))
