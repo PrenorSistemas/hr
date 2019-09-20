@@ -5,7 +5,7 @@
 
 {
     'name': 'HR Payroll Period',
-    'version': '10.0.1.0.0',
+    'version': '10.0.1.1.0',
     'license': 'AGPL-3',
     'category': 'Generic Modules/Human Resources',
     'summary': "Add payroll periods",
@@ -19,9 +19,11 @@
     'data': [
         'data/ir_sequence_data.xml',
         'data/date_range_type.xml',
+        'security/hr_period_security.xml',
         'security/ir.model.access.csv',
         'views/hr_period_view.xml',
         'views/hr_fiscalyear_view.xml',
+        'views/date_range_type_view.xml',
         'views/hr_payslip_view.xml',
         'views/hr_payslip_run_view.xml',
         'views/hr_payslip_employee_view.xml',
