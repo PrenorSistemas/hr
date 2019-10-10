@@ -75,23 +75,6 @@ class HrHolidays(models.Model):
         related="number_of_days_temp", readonly=True,
     )
 
-<<<<<<< HEAD
-    def _check_and_recompute_days(self):
-        date_from = self.date_from
-        date_to = self.date_to
-        if (date_to and date_from) and (date_from <= date_to):
-            if False and not self._check_date_helper(self.employee_id.id, date_from):
-                print "3"
-                raise ValidationError(_("You cannot schedule the start date "
-                                        "on a public holiday or employee's "
-                                        "rest day"))
-            if False and not self._check_date_helper(self.employee_id.id, date_to):
-                print "4"
-                raise ValidationError(_("You cannot schedule the end date "
-                                        "on a public holiday or employee's "
-                                        "rest day"))
-            self.number_of_days_temp = self._recompute_number_of_days()
-=======
     @api.depends('date_from')
     def _compute_date_from_full(self):
         """Put day in employee's user timezone, or user timezone as fallback"""
@@ -145,7 +128,6 @@ class HrHolidays(models.Model):
     def _onchange_date_to_full(self):
         """As inverse methods only works on save, we have to add an onchange"""
         self._inverse_date_to_full()
->>>>>>> upstream/10.0
 
     @api.onchange('date_from')
     def _onchange_date_from(self):
@@ -156,32 +138,10 @@ class HrHolidays(models.Model):
 
     @api.onchange('date_to')
     def _onchange_date_to(self):
-<<<<<<< HEAD
-        super(HrHolidays, self)._onchange_date_to()
-        employee_id = self.employee_id.id
-        # TODO cesa1 follow me
-        if False and not self._check_date_helper(employee_id, self.date_to):
-            raise ValidationError(_("You cannot schedule the end date on "
-                                    "a public holiday or employee's rest day"))
-        if (self.date_to and self.date_from) \
-           and (self.date_from <= self.date_to):
-            self.number_of_days_temp = self._recompute_number_of_days()
-
-    def _recompute_number_of_days(self):
-        date_from = self.date_from
-        date_to = self.date_to
-        employee_id = self.employee_id.id
-        if not date_from or not date_to:
-            return 0
-        days = self._get_number_of_days(date_from, date_to, None)
-        if date_to == date_from:
-            days = 1
-=======
         """Recompute the adjusted value after the standard computation."""
         res = super(HrHolidays, self)._onchange_date_to()
         self._onchange_data_hr_holidays_compute_days()
         return res
->>>>>>> upstream/10.0
 
     @api.onchange('employee_id', 'holiday_status_id')
     def _onchange_data_hr_holidays_compute_days(self):
