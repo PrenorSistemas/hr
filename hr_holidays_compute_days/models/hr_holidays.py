@@ -129,35 +129,3 @@ class HrHolidays(models.Model):
         """As inverse methods only works on save, we have to add an onchange"""
         self._inverse_date_to_full()
 
-    @api.onchange('date_from')
-    def _onchange_date_from(self):
-        """Recompute the adjusted value after the standard computation."""
-        res = super(HrHolidays, self)._onchange_date_from()
-        self._onchange_data_hr_holidays_compute_days()
-        return res
-
-    @api.onchange('date_to')
-    def _onchange_date_to(self):
-        """Recompute the adjusted value after the standard computation."""
-        res = super(HrHolidays, self)._onchange_date_to()
-        self._onchange_data_hr_holidays_compute_days()
-        return res
-
-    @api.onchange('employee_id', 'holiday_status_id')
-    def _onchange_data_hr_holidays_compute_days(self):
-        if self.date_to and self.date_from and self.date_from <= self.date_to:
-            date_from = fields.Datetime.from_string(self.date_from)
-            date_to = fields.Datetime.from_string(self.date_to)
-            employee = self.employee_id
-            if (self.holiday_status_id.exclude_public_holidays or
-                    not self.holiday_status_id):
-                employee = employee.with_context(exclude_public_holidays=True)
-            employee = employee.with_context(
-                include_rest_days=not self.holiday_status_id.exclude_rest_days,
-                compute_full_days=self.holiday_status_id.compute_full_days,
-            )
-            days = employee.get_work_days_count(
-                from_datetime=date_from, to_datetime=date_to,
-            )
-            if days:
-                self.number_of_days_temp = days
